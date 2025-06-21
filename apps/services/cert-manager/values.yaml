@@ -1,7 +1,7 @@
 cert-manager:
   config:
     apiVersion: controller.config.cert-manager.io/v1alpha1
-    enableGatewayAPI: true
+    enableGatewayAPI: false
     kind: ControllerConfiguration
   installCRDs: true
   namespace: cert-manager
