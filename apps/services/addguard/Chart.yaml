@@ -1,0 +1,23 @@
+apiVersion: v2
+name: adguardns
+description: “A Helm wrapper chart to deploy AdGuardNS (AdGuard Home DNS blocker)”
+type: application
+
+# This is your chart’s own version. Bump it whenever you make chart changes.
+version: 0.1.0
+
+# The version of AdGuard Home that the upstream chart deploys.
+# Wrap in quotes so YAML doesn’t treat it as a float.
+appVersion: "0.107.59"
+
+# (Optional) Limit to Kubernetes 1.20+
+#kubeVersion: ">=1.20.0"
+
+dependencies:
+  - name: adguard-home
+    version: 0.19.0          # pull exactly this version
+    repository: https://helm-charts.rm3l.org
+    condition: adguard.enabled
+    tags:
+      - dns
+
