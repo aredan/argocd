@@ -4,16 +4,14 @@ name: adguardns
 description: A Helm umbrella chart to deploy AdGuardNS (AdGuard Home DNS blocker) without on-disk storage
 type: application
 
-# YOUR chart’s version (bump when you change your Chart.yaml or templates)
 version: 0.1.0
-
-# Version of the AdGuard Home application that the subchart installs
 appVersion: "0.107.59"
 
 dependencies:
   - name: adguard-home
     version: 0.19.0
     repository: https://helm-charts.rm3l.org
+    # <-- this must match the *key* in values.yaml exactly
     condition: adguard-home.enabled
     tags:
       - dns
