@@ -1,0 +1,69 @@
+# values.yaml
+# ===============
+# Global (umbrella-chart) settings
+# ===============
+image:
+  pullPolicy: IfNotPresent
+  repository: myregistry.local/adguardns
+  tag: "0.1.0"
+
+# ==============================
+# Enable AdGuard Home subchart
+# ==============================
+adguard-home:
+  enabled: true
+
+  # ────────────────
+  # NO on-disk storage
+  # ────────────────
+  persistence:
+    enabled: false
+
+  # ────────────────────────────────
+  # Inline configuration (all via config files)
+  # ────────────────────────────────
+  # The upstream chart will render this as config.yaml
+  config:
+    # You can replace this whole block with `|–` and your own YAML
+    customConfig: |-
+      # DNS upstream servers
+      upstream_dns:
+        - "1.1.1.1"
+        - "8.8.8.8"
+      
+      # Clients/networks allowed to query
+      clients:
+        local:
+          - "192.168.0.0/16"
+      
+      # Blocklists (you could mount these via extraVolumes if you have them as files)
+      blocklists:
+        - "/etc/adguardns/blocklists/blocklist1.txt"
+        - "/etc/adguardns/blocklists/blocklist2.txt"
+
+  # ────────────────────────────────
+  # (Optional) Mount additional config files via ConfigMap
+  # ────────────────────────────────
+  extraVolumes:
+    - name: config-files
+      configMap:
+        name: adguardns-extra-config
+  extraVolumeMounts:
+    - name: config-files
+      mountPath: /etc/adguardns/blocklists
+      readOnly: true
+
+  # ───────────────
+  # Resources & Service
+  # ───────────────
+  service:
+    type: ClusterIP
+    port: 53
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
