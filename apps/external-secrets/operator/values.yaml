@@ -1,0 +1,20 @@
+external-secrets:
+  installCRDs: true
+  
+  # Configure the operator
+  webhook:
+    port: 10250
+  certController:
+    args: ["--metrics-addr=:8080", "--enable-leader-election"]
+  webhook:
+    args: ["--metrics-addr=:8080"]
+  
+  # Bitwarden configuration
+  # You'll need to create a Kubernetes Secret with your Bitwarden credentials
+  # and reference it in the ExternalSecretStore
+  
+  # Example ExternalSecretStore configuration for Bitwarden
+  # This will be created as a separate file
+  
+  # Example ExternalSecret that uses the Bitwarden store
+  # This will be created as a separate file

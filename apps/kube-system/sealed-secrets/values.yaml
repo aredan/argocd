@@ -1,0 +1,115 @@
+sealed-secrets:
+  # Name of the controller deployment and of other related resources
+  name: sealed-secrets-controller
+  
+  # Namespace where the controller will be installed
+  namespace: kube-system
+  
+  # Create ClusterRole and ClusterRoleBinding
+  rbac:
+    create: true
+    
+  # Service account configuration
+  serviceAccount:
+    create: true
+    name: sealed-secrets-controller
+    
+  # Controller configuration
+  controller:
+    # Number of controller replicas
+    replicaCount: 1
+    
+    # Update strategy
+    updateStrategy:
+      type: RollingUpdate
+      
+    # Resource limits and requests
+    resources:
+      limits:
+        cpu: 500m
+        memory: 128Mi
+      requests:
+        cpu: 100m
+        memory: 64Mi
+
+  # Enable prometheus metrics
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: false
+
+  # Enable webhook for secret unsealing
+  webhook:
+    enabled: true
+    
+  # Custom annotations for the controller service account
+  serviceAccountAnnotations: {}
+  
+  # Security context for the controller pod
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 65534
+    fsGroup: 65534
+
+  # Node selector and tolerations for pod assignment
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  # Priority class name for the controller pod
+  priorityClassName: ""
+  
+  # Pod security context
+  podSecurityContext:
+    fsGroup: 65534
+    runAsNonRoot: true
+    runAsUser: 65534
+    
+  # Pod labels and annotations
+  podLabels: {}
+  podAnnotations: {}
+  
+  # Service configuration
+  service:
+    type: ClusterIP
+    port: 8080
+    targetPort: 8080
+    annotations: {}
+    
+  # Secret configuration
+  secret:
+    # Name of the secret that will contain the sealed secret's certificate
+    name: sealed-secrets-key
+    # Generate a new key if the secret doesn't exist
+    generate: true
+    
+  # Command line arguments for the controller
+  extraArgs: []
+  
+  # Environment variables for the controller
+  extraEnv: []
+  
+  # Extra volumes and volume mounts
+  extraVolumes: []
+  extraVolumeMounts: []
+  
+  # Liveness and readiness probes
+  livenessProbe:
+    httpGet:
+      path: /healthz
+      port: http
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 2
+    successThreshold: 1
+    failureThreshold: 3
+    
+  readinessProbe:
+    httpGet:
+      path: /healthz
+      port: http
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 2
+    successThreshold: 1
+    failureThreshold: 3
