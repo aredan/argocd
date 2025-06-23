@@ -1,4 +1,4 @@
-prometheus-stack:
+kube-prometheus-stack:
   # NOTE: These must be set manually to the control plane IP addresses
   #kubeEtcd:
   #  endpoints:
