@@ -1,0 +1,70 @@
+# Enable the Tailscale operator
+tailscale-operator:
+  enabled: true
+  image:
+    repository: ghcr.io/tailscale/tailscale
+    tag: v1.0.0
+    pullPolicy: IfNotPresent
+  
+  # These values will be populated from ExternalSecret
+  config:
+    oauth:
+      clientId:
+        valueFrom:
+          secretKeyRef:
+            name: tailscale-credentials
+            key: clientId
+      clientSecret:
+        valueFrom:
+          secretKeyRef:
+            name: tailscale-credentials
+            key: clientSecret
+    
+    # Cluster name from the same secret
+    clusterName:
+      valueFrom:
+        secretKeyRef:
+          name: tailscale-credentials
+          key: clusterName
+  
+  # Default values for the operator
+  operator:
+    logLevel: info
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+  
+  # Resource limits and requests
+  resources:
+    requests:
+      cpu: 100m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+# Create an ExternalSecret to fetch credentials from the SecretStore
+externalSecrets:
+  - name: tailscale-credentials
+    refreshInterval: 1h
+    secretStoreRef:
+      name: bitwarden-secret-store  # Reference to your existing SecretStore
+      kind: SecretStore
+      namespace: external-secrets  # Namespace where the SecretStore is deployed
+    target:
+      name: tailscale-credentials
+      creationPolicy: Owner
+    data:
+      - secretKey: ts_clientId
+        remoteRef:
+          key: "ead0205e-f2cf-4395-bcac-b306014d6d2c"  # Update with your Bitwarden secret ID
+          property: ts_clientId
+      - secretKey: ts_clientSecret
+        remoteRef:
+          key: "2b0432e7-c103-4050-b584-b306014dbc84"  # Same or different path in Bitwarden
+          property: ts_clientSecret
+      - secretKey: ts_clusterName
+        remoteRef:
+          key: "1733bea3-8f85-4edd-94b8-b306014df418"  # Same or different path in Bitwarden
+          property: ts_clusterName
