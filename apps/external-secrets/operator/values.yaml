@@ -12,9 +12,12 @@ external-secrets:
   # Bitwarden configuration
   # You'll need to create a Kubernetes Secret with your Bitwarden credentials
   # and reference it in the ExternalSecretStore
-  
+  bitwarden-sdk-server:
+    enabled: true
   # Example ExternalSecretStore configuration for Bitwarden
   # This will be created as a separate file
   
   # Example ExternalSecret that uses the Bitwarden store
   # This will be created as a separate file
+    podAnnotations:
+        secret.reloader.stakater.com/reload: "bitwarden-css-certs,bitwarden-secrets-manager,bitwarden-secrets-manager-secrets,bitwarden-tls-certs,bitwarden-access-token"

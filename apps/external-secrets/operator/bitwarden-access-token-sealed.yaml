@@ -1,0 +1,15 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: bitwarden-access-token
+  namespace: bitwarden-secrets
+spec:
+  encryptedData:
+    token: AgC9/nr/m4LLrWCVeLwXRhGfs1GPBp5ZQ2+VhJgVZOvGvgF02jtFylMIP/g2PhGfiPB3m0qNY8GLAGwoyOa88B5MF+11RJ1hYaRtKwiqwiFpyPFQLLdgf+ddnWk8uB9vQbesMEN7kJRru6vwI+mq+b6wvXkkwR+Ef1FT1prVBa9G/hgaK9GIOOYpPLzJW4uhRiI6JS8GWnOFh0fGANavV9ItTnsMg1+RqvfH2M71skDZDoSctW8YVLKub3GKTSNBtSBgOJg6KMbC1si3METMBTgfpJEUFo+OsHEqFQzF96Ab/19hQkuqGaayfeOShLgoISG4iE/y4w3cECUdIgDcfFRk3qMLYVbhATDyPpMcQlI6dypZ58P6b5klNgfNw5pYYZXpcio1ZmtOV3QkJYMX2gZiHBl/Nit3RusxaKRk0dJnSq4By5gebgk6ZncZ1ior23n8S2qQhyGyG3mroP/u/BMzZCetRchkxRpPh8yNXSgt/2P6Bh7idP035xzJ5H5820slNee36Y28naRs91cCMhYI+KorwS+wA+M8t/EpsQv63uQYuNwC1Fs+LufiuQbqDMoW6KKUmy+Bne+r9TY3cYPVfcTmcAYPdSLeq5mzmWAib5p59apnR+bTRMt93qEE62jMYlEKqrk+YTbxI5gz5l3dE03dQEhWBDIL78fqbXx4u7Aq10N366VwG8vlWUHw1d4VZkrdAGDS1ZESjQP2nHmeN5bzcVkvMq6Hd3L/U7PNo8VGgJ9d3AUCgHyuRJCD4LWWkQ5I3VTXJnlbO7xhDFZ0sPCHarTRmh3pLE7tmgIjymIR/w/SNR5r4iw36t4k
+  template:
+    metadata:
+      creationTimestamp: null
+      name: bitwarden-access-token
+      namespace: bitwarden-secrets
