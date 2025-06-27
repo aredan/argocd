@@ -1,5 +1,5 @@
 apiVersion: v2
-name: external-secrets-operator
+name: external-secrets
 description: External Secrets Operator for Kubernetes
 version: 0.18.0
 appVersion: "0.18.0"
@@ -7,4 +7,3 @@ dependencies:
   - name: external-secrets
     version: 0.18.0
     repository: https://charts.external-secrets.io
-    condition: external-secrets.enabled
