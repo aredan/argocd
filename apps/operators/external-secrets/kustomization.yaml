@@ -4,7 +4,7 @@ kind: Kustomization
 helmCharts:
   - name: external-secrets
     version: 0.18.0
-    repository: https://charts.external-secrets.io
+    repo: https://charts.external-secrets.io
     namespace: external-secrets
     valuesFile: values.yaml
 # Include the Bitwarden self-signed certificate configuration
