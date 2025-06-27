@@ -7,10 +7,10 @@ helmCharts:
     repo: https://charts.external-secrets.io
     releaseName: external-secrets-operator
     namespace: external-secrets
-    installCRDs: true
     valuesFile: values.yaml
 # Include the Bitwarden self-signed certificate configuration
 resources:
+  - eso-bundle.yaml
   - bitwarden-self-signed-cert.yaml
   - bitwarden-ids-sealed.yaml
   - bitwarden-access-token-sealed.yaml
