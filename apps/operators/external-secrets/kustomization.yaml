@@ -7,12 +7,10 @@ helmCharts:
     repo: https://charts.external-secrets.io
     releaseName: external-secrets-operator
     namespace: external-secrets
-    includeCRDs: true
+    installCRDs: true
     valuesFile: values.yaml
 # Include the Bitwarden self-signed certificate configuration
 resources:
-  - bitwarden-secrets-ns.yaml
-  - https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.18.1/controller.yaml
   - bitwarden-self-signed-cert.yaml
   - bitwarden-ids-sealed.yaml
   - bitwarden-access-token-sealed.yaml
