@@ -2,16 +2,18 @@
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
+  annotations:
+    sealedsecrets.bitnami.com/namespace-wide: "true"
   creationTimestamp: null
   name: bitwarden-access-token
   namespace: external-secrets
-  annotations:
-    sealedsecrets.bitnami.com/namespace-wide: "true"
 spec:
   encryptedData:
-    token: AgABxSqN6Oco248r203W0HKoJv3PtGnfxjMwA/DmO4hvLkkPCl7sXcadRo+FmeZ9Egw4L3BzpNO/bVPKpdNnAwjKCdluM121wMsqYL1eEA1jS4/Y325AUI/Bn5YC9aU/vgNkH0/zaehonCG5r9jlw+m5J34l68Jh/bfiYLAljCsCJT1S1LbPaDpd/S8hGiLN+hlsgBNHB0WtCU2Sr2SzCMSaKcyzSyh7XqHfRpNbJg5eyzB4Ws9XPPBFE7TQ16cqhUGdyfT2ZXPIWpiJ2MWMYPUPMiqNMUWQgdM8aZD0FyhGFOvisHvtiZjvlSgYxRAmAo6RxUW5D+S1SWsDn7UfgkdZQPdktSrLiCQCGb/0ZW/zaMgdOEaoLqHWTzH2YTb19yYm7whF0x+DyYETpQcNboxGP3ztqkAVr2vaVONubHpox1LqSj0u+7Rz3W+9wxbWLDrVnw1sBDL3QnPQcBpRbab7Zlol5eXn2Les5O+8i1l2o98Ds4JvF2TivUlQ/hwCAbr/GLGWOlUvNYKH0Nkf3plF97qd/qieG/ymsnpNbbor/tRN0Uegf7k1XTpZkG1tQ1NXThwAJ2hhB8pt5Ukj+g+4Bjmmbao5KyyXn3SKTu9MV7oOae2ivroBGid+UHdoRLqjU4DLYB2afuGlEQT/Rn0MXWInpg0tAb/+69iavvcfJSV4AmC/HuodYK94jXwaCC5Ok9ruJqPiQ8OYjLVTPJ6j0Lou1mpasazAxhZ89j+InlT9IOWVv6yXGpABoYTrf2ZBSZ+no8B6WGKmMsPu+wSRdJAOlV4e35nWA8GBE5pOkBlfrpXrZsKRBuGmGch2
+    token: AgAdxcVx/nv3uQLKAo2eRttyZ5kdVoXbqeKRswcjON2ylHvr1cW3yl5r3FoKfbwiLfqXYNhdjtfZYlmz6ENVzpOc7bgfkvKf4bM3zLwHTX51XzQ8Swk5gsNwUxVKZLG3RzL7CBP/ze8jjrrDGdCCl2aYuxj/FV8+xd39YQourvp5+kLDb5KkevZ3yQ80KBgPf1xkpXnDkuKRWTA4L+Hgn6z3btcMO/IOYQrUV5HXM0/3nuco+kgMgT/f6uU0IyTloIMSa9OKqhrIbXIGf2o3GkmKnqgaGUffAzegQB1nLTJ4nbYdwaqOGanQJTEnXvmJxl8ywXXGhkBBeRcZ8B9Dn9H0MVLOC7cl4d20q+4Y+6Wz044pkdKlPjJhpKWU/aE+CEEH9zFOqa05jE8jezwqnY2Na+P/zE23dkfBEvzP3aGBYAie0h9viA3unf9C02ZiivadnaqaaqR5JgsBT54xwrqPjG1uUrZHS9Oz/drtd57UEJ2j5vH6yqh+oYKGD4JvgFjVIVYTfRDqTyk2tUMe3sriZVxbWscRN27SF7tgOjDRrYK5kfoBeGQt8rVlkQEe8fE1FIQBiqRy1bgIrkunoQdT+C1PQu3VfCR30waWSxBjzAhqE0BbKnAV8FGu1BZZJzGJQ1+QRIl4B3FPlAlMKHLBDiZSr5MGhmCGtBQ91+AQD6FaDMFb82aPCEn5Izb+obiIy6hHaKjTyKdAWdBtaw3ssK64QIsuHvftQxaDe6PDB/fXa0XAC9YU+wME/9Swj8eh3jaB/52ZlSF8NN8IE6AS6pHmvsASRoMqC+EHPi2rAyParHLHZz66XbADyNmb
   template:
     metadata:
+      annotations:
+        sealedsecrets.bitnami.com/namespace-wide: "true"
       creationTimestamp: null
       name: bitwarden-access-token
       namespace: external-secrets
