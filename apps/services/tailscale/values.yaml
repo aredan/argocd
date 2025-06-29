@@ -4,12 +4,12 @@ tailscale-operator:
   
   # OAuth configuration
   oauth:
-    clientId: "$TS_CLIENT_ID"  # Will be set from environment variables
-    clientSecret: "$TS_CLIENT_SECRET"  # Will be set from environment variables
+    clientId: ""  # Will be set from environment variables
+    clientSecret: ""  # Will be set from environment variables
   
   # Operator configuration
   operatorConfig:
-    hostname: "$TS_HOSTNAME"  # Will be set from environment variables
+    hostname: ""  # Will be set from environment variables
   
   # Environment variables for the operator
   env:
@@ -29,7 +29,10 @@ tailscale-operator:
           name: tailscale-credentials
           key: clusterName
   
-
+  args:
+    - "--client-id=$(TS_CLIENT_ID)"
+    - "--client-secret=$(TS_CLIENT_SECRET)"
+    - "--hostname=$(TS_HOSTNAME)"
   # Resource limits and requests
   resources:
     requests:
