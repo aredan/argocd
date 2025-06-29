@@ -9,21 +9,11 @@ tailscale-operator:
   
   # Operator configuration
   operatorConfig:
-    hostname: "${TS_HOSTNAME}"  # Will be set from environment variables
+    hostname: ""  # Will be set from environment variables
   
   # Environment variables for the operator
   env:
-    - name: TS_CLIENT_ID
-      valueFrom:
-        secretKeyRef:
-          name: tailscale-credentials
-          key: clientId
-    - name: TS_CLIENT_SECRET
-      valueFrom:
-        secretKeyRef:
-          name: tailscale-credentials
-          key: clientSecret
-    - name: TS_HOSTNAME
+    - name: OPERATOR_HOSTNAME
       valueFrom:
         secretKeyRef:
           name: tailscale-credentials
