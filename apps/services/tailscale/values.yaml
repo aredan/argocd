@@ -1,30 +1,35 @@
-# Enable the Tailscale operator
+# values.yaml
 tailscale-operator:
   installCRDs: true
   
-  # These values will be populated from ExternalSecret
+  # OAuth configuration
   oauth:
-    clientId:
+    clientId: ""  # Will be set from environment variables
+    clientSecret: ""  # Will be set from environment variables
+  
+  # Operator configuration
+  operatorConfig:
+    hostname: ""  # Will be set from environment variables
+  
+  # Environment variables for the operator
+  env:
+    - name: TS_CLIENT_ID
       valueFrom:
         secretKeyRef:
           name: tailscale-credentials
           key: clientId
-    clientSecret:
+    - name: TS_CLIENT_SECRET
       valueFrom:
         secretKeyRef:
           name: tailscale-credentials
           key: clientSecret
-    
-    # Cluster name from the same secret
-  
-  # Default values for the operator
-  operatorConfig:
-    hostname:
+    - name: TS_HOSTNAME
       valueFrom:
         secretKeyRef:
           name: tailscale-credentials
           key: clusterName
   
+
   # Resource limits and requests
   resources:
     requests:
