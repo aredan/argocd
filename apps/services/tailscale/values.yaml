@@ -4,12 +4,12 @@ tailscale-operator:
   
   # OAuth configuration
   oauth:
-    clientId: ""  # Will be set from environment variables
-    clientSecret: ""  # Will be set from environment variables
+    clientId: "$TS_CLIENT_ID"  # Will be set from environment variables
+    clientSecret: "$TS_CLIENT_SECRET"  # Will be set from environment variables
   
   # Operator configuration
   operatorConfig:
-    hostname: ""  # Will be set from environment variables
+    hostname: "$TS_HOSTNAME"  # Will be set from environment variables
   
   # Environment variables for the operator
   env:
