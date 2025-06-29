@@ -9,7 +9,7 @@ tailscale-operator:
   
   # Operator configuration
   operatorConfig:
-    hostname: ""  # Will be set from environment variables
+    hostname: "${TS_HOSTNAME}"  # Will be set from environment variables
   
   # Environment variables for the operator
   env:
@@ -29,10 +29,7 @@ tailscale-operator:
           name: tailscale-credentials
           key: clusterName
   
-  args:
-    - "--client-id=$(TS_CLIENT_ID)"
-    - "--client-secret=$(TS_CLIENT_SECRET)"
-    - "--hostname=$(TS_HOSTNAME)"
+
   # Resource limits and requests
   resources:
     requests:
