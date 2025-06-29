@@ -1,203 +1,83 @@
 # External Secrets Operator with Bitwarden
 
-This directory contains the configuration for deploying the External Secrets Operator (ESO) with Bitwarden Secrets Manager as the secrets backend, secured using Sealed Secrets.
+This directory contains the configuration for deploying the External Secrets Operator (ESO) with Bitwarden Secrets Manager integration, secured using Sealed Secrets. The operator is deployed in the `external-secrets` namespace.
 
 ## Prerequisites
 
-1. Bitwarden organization with Secrets Manager enabled
-2. Bitwarden CLI (bw) version 2025.5.0 or later
-3. `kubeseal` CLI tool installed
-4. Kubernetes cluster with Sealed Secrets controller installed
-5. ArgoCD ApplicationSet configured to deploy from this repository
+- Bitwarden organization with Secrets Manager enabled
+- Bitwarden API credentials (client ID and client secret)
+- `kubeseal` CLI tool installed
+- Sealed Secrets controller running in the cluster
+- ArgoCD installed and configured to manage this repository
 
-## Finding Your Secret ID
+## Getting Started
 
-### Using Bitwarden CLI
+### 1. Configure Bitwarden Secret Store
 
-1. **Install or update Bitwarden CLI**:
-   ```bash
-   # Using Homebrew (macOS)
-   brew install bitwarden-cli
-   
-   # Or download from: https://github.com/bitwarden/cli/releases
-   ```
+The `bitwarden-secret-store.yaml` file contains the SecretStore configuration for Bitwarden. It's pre-configured to work with the sealed Bitwarden credentials.
 
-2. **Log in and unlock your vault**:
-   ```bash
-   # Log in
-   bw login
-   
-   # Unlock your vault
-   bw unlock
-   ```
+### 2. Add Your Secrets to Bitwarden
 
-3. **List organizations and find your organization ID**:
-   ```bash
-   bw list organizations
-   ```
+1. Log in to the [Bitwarden Web Vault](https://vault.bitwarden.com/)
+2. Navigate to "Secrets Manager"
+3. Create a new secret or use an existing one
+4. Note the Secret ID (UUID) of your secret
 
-4. **List secrets in your organization**:
-   ```bash
-   bw list secrets --organizationid YOUR_ORG_ID
-   ```
+## Creating a New External Secret
 
-### Using Web Interface
-
-1. Go to [Bitwarden Web Vault](https://vault.bitwarden.com/)
-2. Log in to your account
-3. Click on "Secrets Manager" in the left sidebar
-4. Find your secret in the list
-5. Click on it to view its details
-6. Copy the "Secret ID" (UUID format)
-
-## Configuration
-
-### 1. Update SecretStore
-
-Edit `bitwarden-secret-store.yaml` with your Bitwarden configuration:
-
-```yaml
-apiVersion: external-secrets.io/v1beta1
-kind: SecretStore
-metadata:
-  name: bitwarden-secret-store
-  namespace: external-secrets
-spec:
-  provider:
-    http:
-      url: https://api.bitwarden.com
-      headers:
-        Authorization: "Bearer ${BITWARDEN_API_KEY}"
-      secrets:
-      - name: "bitwarden-secrets"
-        path: "/secrets/{{ .secretKey }}"
-        method: GET
-        headers:
-          Accept: "application/json"
-  template:
-    metadata:
-      annotations:
-        sealedsecrets.bitnami.com/managed: "true"
-    data:
-      BITWARDEN_API_KEY:
-        secretKeyRef:
-          name: bitwarden-credentials
-          key: client-secret
-```
-
-### 2. Create ExternalSecret
-
-Create a new file (e.g., `my-app-secret.yaml`) with the following content:
+1. Create a new file in the `external-secrets` directory (e.g., `my-app-secret.yaml`):
 
 ```yaml
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: my-app-secret
-  namespace: your-namespace
+  namespace: your-namespace  # Update with your target namespace
 spec:
   refreshInterval: 15m
   secretStoreRef:
     name: bitwarden-secret-store
     kind: SecretStore
   target:
-    name: my-app-credentials
-    creationPolicy: Owner
+    name: my-app-credentials  # Name of the Kubernetes secret that will be created
   data:
-    - secretKey: API_KEY
+    - secretKey: API_KEY      # Key in the Kubernetes secret
       remoteRef:
-        key: /secrets/YOUR_SECRET_ID_HERE  # Replace with your secret ID
-        property: value  # Or the specific property if it's a JSON object
+        key: /secrets/YOUR_SECRET_ID_HERE  # Replace with your Bitwarden secret ID
+        property: value                    # Or specific JSON property if applicable
 ```
 
-### 3. Seal Your Bitwarden Credentials
-
-1. Create a Kubernetes secret with your Bitwarden credentials:
-   ```bash
-   kubectl create secret generic bitwarden-credentials \
-     --from-literal=client-id=your-client-id \
-     --from-literal=client-secret=your-client-secret \
-     -n external-secrets \
-     --dry-run=client \
-     -o yaml > bitwarden-credentials.yaml
-   ```
-
-2. Seal the secret:
-   ```bash
-   kubeseal --format=yaml --cert=public-key.pem < bitwarden-credentials.yaml > bitwarden-credentials-sealed.yaml
-   ```
-
-3. Commit the sealed secret to your repository
+2. Commit and push your changes. ArgoCD will automatically apply the changes.
 
 ## Troubleshooting
 
-- **Secret not found**: Verify the secret ID and that your API key has the correct permissions
-- **Authentication errors**: Check that your Bitwarden credentials are correct and have not expired
-- **Sync issues**: Ensure the External Secrets Operator pod is running and check its logs
+### Common Issues
+
+- **Secret not found**:
+  - Verify the secret ID in Bitwarden
+  - Check that the API key has the correct permissions
+  - Ensure the secret is in the correct organization
+
+- **Authentication errors**:
+  - Verify Bitwarden credentials in the sealed secret
+  - Check if the API key has expired
+  - Ensure the service account has the correct permissions
+
+- **Sync issues**:
+  ```bash
+  # Check operator logs
+  kubectl logs -n external-secrets -l app.kubernetes.io/name=external-secrets
+  
+  # Check the status of your ExternalSecret
+  kubectl get externalsecret -n <namespace> <secret-name> -o yaml
+  ```
 
 ## Security Notes
 
 - Never commit unsealed secrets to the repository
-- Rotate your Bitwarden API keys regularly
+- Rotate your Bitwarden API keys regularly (every 90 days recommended)
 - Use the principle of least privilege for API key permissions
-
-## Directory Structure
-
-```
-apps/
-├── external-secrets/          # Namespace
-│   └── operator/              # External Secrets Operator
-│       ├── Chart.yaml         # Helm chart for ESO
-│       ├── values.yaml        # Configuration values
-│       ├── README.md          # This file
-│       ├── bitwarden-secret-store.yaml  # Bitwarden configuration
-│       └── bitwarden-credentials-sealed.yaml  # Sealed credentials
-├── kube-system/               # System components
-│   └── sealed-secrets/        # Sealed Secrets controller
-└── monitoring/                # Monitoring components
-    └── prometheus-stack/      # Prometheus stack
-```
-
-## Example Workflow
-
-1. Create a secret in Bitwarden Secrets Manager
-2. Find the secret ID using the CLI or web interface
-3. Create an ExternalSecret manifest referencing the secret ID
-4. Commit and push your changes
-5. ArgoCD will deploy the ExternalSecret
-6. The External Secrets Operator will sync the secret from Bitwarden to your cluster
-
-## Prerequisites
-
-1. **Bitwarden Account**:
-   - Organization with Secrets Manager enabled
-   - API credentials (client ID and client secret)
-   - Secrets already created in Bitwarden Secrets Manager
-
-2. **Local Tools**:
-   - `kubectl` configured with cluster access
-   - `helm` (v3+)
-   - `kubeseal` for sealing secrets
-   - `bw` (Bitwarden CLI) version 2025.5.0 or later
-
-3. **Cluster Components**:
-   - Kubernetes cluster with ArgoCD installed
-   - Sealed Secrets controller in `kube-system` namespace
-   - External Secrets Operator (will be deployed by this chart)
-
-4. **GitOps Setup**:
-   - ArgoCD ApplicationSet configured to scan `apps/*/*`
-   - Proper RBAC permissions for ArgoCD to manage resources
-
-## Installation
-
-### 1. Install Sealed Secrets (if not already installed)
-
-Ensure the Sealed Secrets controller is installed in your cluster. See the `kube-system/sealed-secrets` directory for details.
-
-### 2. Seal Your Bitwarden Credentials
-
-1. Create a Kubernetes secret with your Bitwarden API credentials:
+- Monitor the External Secrets Operator logs for any synchronization issues
    ```bash
    kubectl create secret generic bitwarden-credentials \
      --from-literal=client-id=your-client-id \

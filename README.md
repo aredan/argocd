@@ -6,27 +6,28 @@ This repository contains the Kubernetes application configurations managed by Ar
 
 ```
 apps/
-├── external-secrets/          # External Secrets configuration
-│   └── operator/              # External Secrets Operator
-│       ├── Chart.yaml         # Helm chart for ESO
-│       ├── values.yaml        # Configuration values
-│       ├── README.md          # Detailed documentation
-│       ├── bitwarden-secret-store.yaml  # Bitwarden configuration
-│       └── bitwarden-credentials-sealed.yaml  # Sealed credentials
 ├── kube-system/               # System components
 │   └── sealed-secrets/        # Sealed Secrets controller
 │       ├── Chart.yaml         # Helm chart for Sealed Secrets
 │       └── values.yaml        # Configuration values
 ├── monitoring/                # Monitoring stack
-│   ├── prometheus-stack/      # Prometheus, Grafana, and Alertmanager
-│   │   ├── Chart.yaml
-│   │   └── values.yaml
-│   └── namespace.yaml         # Monitoring namespace
+│   └── prometheus-stack/      # Prometheus, Grafana, and Alertmanager
+│       ├── Chart.yaml
+│       └── values.yaml
+├── operators/                 # Cluster operators
+│   └── external-secrets/      # External Secrets Operator
+│       ├── Chart.yaml         # Helm chart for ESO
+│       ├── values.yaml        # Configuration values
+│       ├── bitwarden-secret-store.yaml  # Bitwarden configuration
+│       └── bitwarden-credentials-sealed.yaml  # Sealed credentials
 └── services/                  # Application services
     ├── adguard/              # AdGuard Home
     │   ├── Chart.yaml
     │   └── values.yaml
-    └── cert-manager/         # Cert Manager
+    ├── cert-manager/         # Cert Manager
+    │   ├── Chart.yaml
+    │   └── values.yaml
+    └── tailscale/            # Tailscale VPN
         ├── Chart.yaml
         └── values.yaml
 ```
@@ -68,7 +69,7 @@ kubeseal --format=yaml --cert=public-key.pem < my-secret.yaml > my-sealed-secret
 
 To use Bitwarden as a secrets backend:
 
-1. Update `apps/external-secrets/operator/bitwarden-secret-store.yaml` with your Bitwarden API configuration
+1. Update `apps/operators/external-secrets/bitwarden-secret-store.yaml` with your Bitwarden API configuration
 2. Seal your Bitwarden credentials (see the operator's README)
 3. Commit the sealed credentials to the repository
 
@@ -80,8 +81,8 @@ To use Bitwarden as a secrets backend:
 - **Namespace**: `kube-system`
 
 ### External Secrets Operator
-- **Path**: `apps/external-secrets/operator`
-- **Description**: Syncs secrets from external secret stores to Kubernetes
+- **Path**: `apps/operators/external-secrets`
+- **Description**: Syncs secrets from external secret stores (like Bitwarden) to Kubernetes
 - **Namespace**: `external-secrets`
 
 ### Monitoring Stack
@@ -97,6 +98,11 @@ To use Bitwarden as a secrets backend:
 ### Cert Manager
 - **Path**: `apps/services/cert-manager`
 - **Description**: Manages TLS certificates for your applications
+- **Namespace**: `services`
+
+### Tailscale
+- **Path**: `apps/services/tailscale`
+- **Description**: Secure network connectivity and VPN solution
 - **Namespace**: `services`
 
 ## Development Workflow

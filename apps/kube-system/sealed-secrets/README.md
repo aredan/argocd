@@ -1,16 +1,17 @@
 # Sealed Secrets Controller
 
-This directory contains the Helm chart for deploying the Bitnami Sealed Secrets controller in your Kubernetes cluster. Sealed Secrets allows you to encrypt your Kubernetes Secrets so they can be safely stored in version control.
+This directory contains the Helm chart for deploying the Bitnami Sealed Secrets controller in the `kube-system` namespace. Sealed Secrets allows you to encrypt your Kubernetes Secrets so they can be safely stored in version control.
 
 ## Prerequisites
 
 - `kubectl` with cluster admin access
 - `kubeseal` CLI tool installed
 - Helm v3+
+- ArgoCD installed in the cluster
 
 ## Installation
 
-The Sealed Secrets controller is deployed using the Bitnami Sealed Secrets Helm chart. The configuration is managed in `values.yaml`.
+The Sealed Secrets controller is automatically deployed by ArgoCD using the Helm chart in this directory. No manual installation is required.
 
 ## Usage
 
@@ -19,16 +20,10 @@ The Sealed Secrets controller is deployed using the Bitnami Sealed Secrets Helm 
 To encrypt secrets, you'll need the public key from the Sealed Secrets controller:
 
 ```bash
-# Save the public key to a file
 kubeseal --fetch-cert \
   --controller-namespace=kube-system \
   --controller-name=sealed-secrets \
   > public-key.pem
-
-# Or view the public key
-kubeseal --fetch-cert \
-  --controller-namespace=kube-system \
-  --controller-name=sealed-secrets
 ```
 
 ### 2. Create a Sealed Secret
@@ -49,38 +44,36 @@ kubeseal --fetch-cert \
      < my-secret.yaml > my-sealed-secret.yaml
    ```
 
-3. Apply the sealed secret:
-   ```bash
-   kubectl apply -f my-sealed-secret.yaml
-   ```
+3. The sealed secret will be automatically applied by ArgoCD when committed to the repository.
 
 ### 3. Verify the Secret
 
 ```bash
 # Check the sealed secret
-kubectl get SealedSecret my-secret -o yaml
+kubectl get SealedSecret -n <namespace> <secret-name>
 
 # Check the decrypted secret
-kubectl get secret my-secret -o yaml
+kubectl get secret -n <namespace> <secret-name>
 ```
 
 ## Troubleshooting
 
-### If you get "no endpoints available"
-Ensure the Sealed Secrets controller is running:
+### Sealed Secrets controller not running
 ```bash
 kubectl get pods -n kube-system -l app.kubernetes.io/name=sealed-secrets
+
+# Check logs if pod is in CrashLoopBackOff
+kubectl logs -n kube-system -l app.kubernetes.io/name=sealed-secrets
 ```
 
-### If you get "certificate signed by unknown authority"
-Make sure you're using the correct controller name and namespace:
-```bash
-kubectl get svc -n kube-system -l app.kubernetes.io/name=sealed-secrets
-```
+### Secret not being decrypted
+- Verify the secret is in the same namespace as the SealedSecret resource
+- Check the SealedSecret controller logs for decryption errors
+- Ensure the secret name in the SealedSecret matches the target secret name
 
 ## Security Notes
 
 - The public key is safe to commit to version control
-- Keep the private key (stored in the controller) secure
+- The private key is automatically managed by the controller
 - Rotate the keys if the private key is compromised
-- Use RBAC to restrict access to the Sealed Secrets controller
+- Access to the `kube-system` namespace should be restricted
