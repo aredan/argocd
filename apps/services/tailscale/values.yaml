@@ -8,8 +8,8 @@ tailscale-operator:
     clientSecret: ""  # Will be set from environment variables
   
   # Operator configuration
-  operatorConfig:
-    hostname: ""  # Will be set from environment variables
+#  operatorConfig:
+#    hostname: ""  # Will be set from environment variables
   
   # Environment variables for the operator
   env:
