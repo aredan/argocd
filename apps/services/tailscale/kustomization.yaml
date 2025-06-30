@@ -5,8 +5,18 @@ resources:
   - https://raw.githubusercontent.com/tailscale/tailscale/refs/heads/main/cmd/k8s-operator/deploy/manifests/operator.yaml?ref=v1.84.3
   - tailscale-secrets.yaml
 
-patches:
-  - path: deployment-patch.yaml
-    target:
+patchesJson6902:
+  - target:
+      group: apps
+      version: v1
       kind: Deployment
       name: operator
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value:
+          name: OPERATOR_HOSTNAME
+          valueFrom:
+            secretKeyRef:
+              name: tailscale-credentials
+              key: clusterName
