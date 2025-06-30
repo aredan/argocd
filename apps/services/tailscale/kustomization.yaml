@@ -12,7 +12,7 @@ patchesJson6902:
       kind: Deployment
       name: operator
     patch: |-
-      - op: add
+      - op: replace
         path: /spec/template/spec/containers/0/env/-
         value:
           name: OPERATOR_HOSTNAME
