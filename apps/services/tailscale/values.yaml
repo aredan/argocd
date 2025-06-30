@@ -3,20 +3,6 @@ tailscale-operator:
   installCRDs: true
   
   # OAuth configuration
-  oauth:
-    clientId: ""  # Will be set from environment variables
-    clientSecret: ""  # Will be set from environment variables
-  
-  # Operator configuration
-#  operatorConfig:
-#    hostname: ""  # Will be set from environment variables
-  
-  # Resource limits and requests
-  resources:
-    requests:
-      cpu: 100m
-      memory: 64Mi
-    limits:
-      cpu: 200m
-      memory: 128Mi
-
+#  oauth:
+#    clientId: ""  # Will be set from environment variables
+#    clientSecret: ""  # Will be set from environment variables
