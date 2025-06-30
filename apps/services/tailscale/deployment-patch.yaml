@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: operator
+  namespace: tailscale
+spec:
+  template:
+    spec:
+      containers:
+          env:
+            - name: OPERATOR_HOSTNAME
+              valueFrom:
+                secretKeyRef:
+                  name: tailscale-credentials
+                  key: clusterName
