@@ -11,17 +11,6 @@ tailscale-operator:
 #  operatorConfig:
 #    hostname: ""  # Will be set from environment variables
   
-  # Environment variables for the operator
-  args:
-    - "--hostname=$(OPERATOR_HOSTNAME)"
-  env:
-    - name: OPERATOR_HOSTNAME
-      valueFrom:
-        secretKeyRef:
-          name: tailscale-credentials
-          key: clusterName
-  
-
   # Resource limits and requests
   resources:
     requests:
