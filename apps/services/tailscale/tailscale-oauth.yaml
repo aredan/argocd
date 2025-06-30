@@ -1,0 +1,17 @@
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: tailscale-oauth
+  namespace: tailscale
+spec:
+  refreshInterval: "15s"
+  secretStoreRef:
+    name: bitwarden-secretsmanager
+    kind: ClusterSecretStore
+  data:
+    - secretKey: client_id
+      remoteRef:
+        key: ts_clientId
+    - secretKey: client_secret
+      remoteRef:
+        key: ts_clientSecret
