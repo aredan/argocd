@@ -47,12 +47,7 @@ operatorConfig:
     pullPolicy: Always
   logging: "info" # info, debug, dev
   hostname: ""
-  extraEnv:
-    - name: OPERATOR_HOSTNAME
-      valueFrom:
-        secretKeyRef:
-          name: tailscale-credentials
-          key: clusterName
+
   nodeSelector:
     kubernetes.io/os: linux
 
