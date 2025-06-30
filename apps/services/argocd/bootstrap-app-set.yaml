@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: bootstrap
+spec:
+  generators:
+    - matrix:
+        generators:
+          - list:
+              elements:
+                - repoURL: https://github.com/aredan/argocd.git
+                  revision: HEAD
+                  repoPath: apps/*/*
+          - git:
+              repoURL: '{{ repoURL }}'
+              revision: '{{ revision }}'
+              directories:
+                - path: '{{ repoPath }}'
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  template:
+    metadata:
+      name: '{{ path[2] }}'
+      namespace: argocd
+    spec:
+      project: default
+      source:
+        repoURL: '{{ repoURL }}'
+        targetRevision: '{{ revision }}'
+        path: '{{ path }}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{ path[2] }}'
+      syncPolicy:
+        automated:
+          prune: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
+          - ApplyOutOfSyncOnly=true
+          - RespectIgnoreDifferences=true
+          - SkipDryRunOnMissingResource=true
+        retry:
+          limit: -1 # Infinite retries
+          backoff:
+            duration: 30s
+            factor: 2
+            maxDuration: 5m
+
