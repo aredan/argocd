@@ -59,10 +59,7 @@ spec:
             - name: OPERATOR_INITIAL_TAGS
               value: {{ join "," .Values.operatorConfig.defaultTags }}
             - name: OPERATOR_HOSTNAME
-              valueFrom:
-                secretKeyRef:
-                  name: tailscale-credentials
-                  key: clusterName
+              value: {{ .Values.operatorConfig.hostname }}
             - name: OPERATOR_SECRET
               value: operator
             - name: OPERATOR_LOGGING
