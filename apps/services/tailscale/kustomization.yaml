@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - https://raw.githubusercontent.com/tailscale/tailscale/refs/heads/main/cmd/k8s-operator/deploy/manifests/operator.yaml?ref=v1.84.3
-  - tailscale-secret.yaml
+  - tailscale-secrets.yaml
 
 patches:
   - path: deployment-patch.yaml
