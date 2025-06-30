@@ -12,6 +12,8 @@ tailscale-operator:
 #    hostname: ""  # Will be set from environment variables
   
   # Environment variables for the operator
+  args:
+    - "--hostname=$(OPERATOR_HOSTNAME)"
   env:
     - name: OPERATOR_HOSTNAME
       valueFrom:
