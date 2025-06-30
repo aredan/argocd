@@ -13,7 +13,7 @@ patchesJson6902:
       name: operator
     patch: |-
       - op: replace
-        path: /spec/template/spec/containers/0/env/0
+        path: /spec/template/spec/containers/0/env/1
         value:
           name: OPERATOR_HOSTNAME
           valueFrom:
