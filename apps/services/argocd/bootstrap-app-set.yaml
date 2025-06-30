@@ -28,8 +28,8 @@ spec:
         repoURL: '{{ repoURL }}'
         targetRevision: '{{ revision }}'
         path: '{{ path }}'
-      plugin:
-        name: lovely-plugin
+        plugin:
+          name: argocd-lovely-plugin-v1.0
       destination:
         server: https://kubernetes.default.svc
         namespace: '{{ path[2] }}'
