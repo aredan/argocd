@@ -9,27 +9,51 @@ apps/
 ├── kube-system/               # System components
 │   └── sealed-secrets/        # Sealed Secrets controller
 │       ├── Chart.yaml         # Helm chart for Sealed Secrets
-│       └── values.yaml        # Configuration values
+│       ├── values.yaml        # Configuration values
+│       └── README.md          # Documentation and setup instructions
+│
 ├── monitoring/                # Monitoring stack
 │   └── prometheus-stack/      # Prometheus, Grafana, and Alertmanager
 │       ├── Chart.yaml
 │       └── values.yaml
+│
 ├── operators/                 # Cluster operators
 │   └── external-secrets/      # External Secrets Operator
 │       ├── Chart.yaml         # Helm chart for ESO
 │       ├── values.yaml        # Configuration values
-│       ├── bitwarden-secret-store.yaml  # Bitwarden configuration
-│       └── bitwarden-credentials-sealed.yaml  # Sealed credentials
+│       ├── README.md          # Documentation and setup instructions
+│       ├── eso-bundle.yaml    # External Secrets Operator bundle
+│       └── templates/         # Secret templates and configurations
+│           ├── bitwarden-access-token-sealed.yaml
+│           ├── bitwarden-ids-sealed.yaml
+│           ├── bitwarden-secret-store.yaml
+│           └── bitwarden-self-signed-cert.yaml
+│
 └── services/                  # Application services
     ├── adguard/              # AdGuard Home
     │   ├── Chart.yaml
     │   └── values.yaml
+    │
+    ├── argocd/               # ArgoCD configuration
+    │   ├── argocd-lovely-cm.yaml      # Lovely plugin config
+    │   ├── argocd-lovely-plugin.yaml  # Lovely plugin deployment
+    │   ├── bootstrap-app-set.yaml     # ApplicationSet for bootstrapping
+    │   ├── config-cmd-params.yaml     # Command line parameters
+    │   ├── config.yaml               # Main configuration
+    │   ├── kustomization.yaml        # Kustomize configuration
+    │   ├── namespace.yaml            # Namespace definition
+    │   ├── params.yaml               # Template parameters
+    │   └── service.yaml              # Service definition
+    │
     ├── cert-manager/         # Cert Manager
     │   ├── Chart.yaml
     │   └── values.yaml
+    │
     └── tailscale/            # Tailscale VPN
-        ├── Chart.yaml
-        └── values.yaml
+        ├── deployment-patch.yaml    # Custom deployment patches
+        ├── kustomization.yaml       # Kustomize configuration
+        ├── tailscale-oauth.yaml     # OAuth configuration
+        └── tailscale-secrets.yaml   # Secret definitions
 ```
 
 ## Prerequisites
@@ -38,12 +62,13 @@ apps/
 - `kubectl` configured to access your cluster
 - `helm` (v3+) for local chart development
 - `kubeseal` for managing sealed secrets
+- `kustomize` for managing Kubernetes resources
 
 ## Getting Started
 
 ### 1. Bootstrap the Repository
 
-This repository is designed to work with an ArgoCD ApplicationSet that automatically discovers and deploys applications. The ApplicationSet should be configured to scan the `apps/*/*` path.
+This repository uses an ArgoCD ApplicationSet for bootstrapping applications. The bootstrap configuration is located at `apps/services/argocd/bootstrap-app-set.yaml`.
 
 ### 2. Sealed Secrets Setup
 
