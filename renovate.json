@@ -1,8 +1,15 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "argocd": {
+    "extends": ["config:base"],
+  
+    "fileMatch": [
+      "^apps/([^/]+/)+[^/]+\\.ya?ml$"
+    ],
+  
+    "kustomize": {
       "fileMatch": [
-        "^apps/([^/]+/)+[^/]+\\.ya?ml$"
-      ]
+        "^apps/([^/]+/)+kustomization\\.ya?ml$"
+      ],
+      "pinDigests": false
     }
-}
+  }
