@@ -2,26 +2,24 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": ["config:base"],
   
+    "argocd": {
+      "managerFilePatterns": ["^apps/([^/]+/)+[^/]+\\.ya?ml$"]
+    },
+  
     "fileMatch": [
-      "^apps/([^/]+/)+[^/]+\\.ya?ml$"
+      "^apps/([^/]+/)+[^/]+\\.ya?ml$",           
+      "^apps/([^/]+/)+kustomization\\.ya?ml$",   
+      "^apps/([^/]+/)+Chart\\.yaml$"             
     ],
   
     "kustomize": {
-      "fileMatch": [
-        "^apps/([^/]+/)+kustomization\\.ya?ml$"
-      ]
+      "fileMatch": ["^apps/([^/]+/)+kustomization\\.ya?ml$"]
     },
   
-    "packageRules": [
-      {
-        "matchManagers": ["kustomize"],
-        "matchDatasources": ["git-tags"],
-        "matchPackageNames": ["https://raw\\.githubusercontent\\.com/[^?]+\\?ref=v\\d+\\.\\d+\\.\\d+"],
-        "datasourceTemplate": "github-tags",
-        "registryUrls": ["https://github.com/"]
-      }
-    ],
-  
+    "helm": {
+      "fileMatch": ["^apps/([^/]+/)+Chart\\.yaml$"]
+    },
+
     "hostRules": [
       {
         "hostType": "github",
