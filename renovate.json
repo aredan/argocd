@@ -15,10 +15,6 @@
     "kustomize": {
       "fileMatch": ["^apps/([^/]+/)+kustomization\\.ya?ml$"]
     },
-  
-    "helm": {
-      "fileMatch": ["^apps/([^/]+/)+Chart\\.yaml$"]
-    },
 
     "hostRules": [
       {
