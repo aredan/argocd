@@ -4,3 +4,4 @@ namespace: cloudflare-operator
 resources:
   # ensure you update the ref in this line to the latest version
   - https://github.com/adyanth/cloudflare-operator.git/config/default?ref=v0.13.1
+  - cf-external-secret.yaml
