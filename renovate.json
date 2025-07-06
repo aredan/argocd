@@ -1,5 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "prHourlyLimit": 10,
   "argocd": {
     "fileMatch": [
       "^apps/([^/]+/)+[^/]+\\.ya?ml$"
