@@ -2,58 +2,27 @@
 
 This repository contains the Kubernetes application configurations managed by ArgoCD. It follows GitOps principles to declaratively manage your Kubernetes cluster's state.
 
+Note: This repository is a work in progress and is not yet ready for production use.
+
 ## Repository Structure
 
 ```
 apps/
 ├── kube-system/               # System components
 │   └── sealed-secrets/        # Sealed Secrets controller
-│       ├── Chart.yaml         # Helm chart for Sealed Secrets
-│       ├── values.yaml        # Configuration values
-│       └── README.md          # Documentation and setup instructions
 │
 ├── monitoring/                # Monitoring stack
 │   └── prometheus-stack/      # Prometheus, Grafana, and Alertmanager
-│       ├── Chart.yaml
-│       └── values.yaml
 │
 ├── operators/                 # Cluster operators
 │   └── external-secrets/      # External Secrets Operator
-│       ├── Chart.yaml         # Helm chart for ESO
-│       ├── values.yaml        # Configuration values
-│       ├── README.md          # Documentation and setup instructions
-│       ├── eso-bundle.yaml    # External Secrets Operator bundle
-│       └── templates/         # Secret templates and configurations
-│           ├── bitwarden-access-token-sealed.yaml
-│           ├── bitwarden-ids-sealed.yaml
-│           ├── bitwarden-secret-store.yaml
-│           └── bitwarden-self-signed-cert.yaml
 │
-└── services/                  # Application services
-    ├── adguard/              # AdGuard Home
-    │   ├── Chart.yaml
-    │   └── values.yaml
-    │
-    ├── argocd/               # ArgoCD configuration
-    │   ├── argocd-lovely-cm.yaml      # Lovely plugin config
-    │   ├── argocd-lovely-plugin.yaml  # Lovely plugin deployment
-    │   ├── bootstrap-app-set.yaml     # ApplicationSet for bootstrapping
-    │   ├── config-cmd-params.yaml     # Command line parameters
-    │   ├── config.yaml               # Main configuration
-    │   ├── kustomization.yaml        # Kustomize configuration
-    │   ├── namespace.yaml            # Namespace definition
-    │   ├── params.yaml               # Template parameters
-    │   └── service.yaml              # Service definition
-    │
-    ├── cert-manager/         # Cert Manager
-    │   ├── Chart.yaml
-    │   └── values.yaml
-    │
-    └── tailscale/            # Tailscale VPN
-        ├── deployment-patch.yaml    # Custom deployment patches
-        ├── kustomization.yaml       # Kustomize configuration
-        ├── tailscale-oauth.yaml     # OAuth configuration
-        └── tailscale-secrets.yaml   # Secret definitions
+├── services/                 # Application services
+│   ├── adguard/              # AdGuard Home
+│   ├── argocd/               # ArgoCD configuration
+│   ├── cert-manager/         # Cert Manager
+│   └── tailscale/            # Tailscale VPN
+
 ```
 
 ## Prerequisites
@@ -130,23 +99,6 @@ To use Bitwarden as a secrets backend:
 - **Description**: Secure network connectivity and VPN solution
 - **Namespace**: `services`
 
-## Development Workflow
-
-1. **Add a new application**:
-   - Create a new directory under the appropriate namespace in `apps/`
-   - Add your Kubernetes manifests or Helm chart
-   - Commit and push your changes
-
-2. **Update an application**:
-   - Modify the manifests or Helm values in the application's directory
-   - Commit and push your changes
-   - ArgoCD will automatically sync the changes
-
-3. **Add secrets**:
-   - Create a Kubernetes secret locally
-   - Seal it using `kubeseal`
-   - Commit the sealed secret to the repository
-
 ## Best Practices
 
 1. **Secrets Management**:
@@ -169,12 +121,3 @@ To use Bitwarden as a secrets backend:
 - **Application not syncing**: Check the ArgoCD UI for sync errors
 - **Secrets not being created**: Verify the Sealed Secrets controller is running and the sealed secret is properly formatted
 - **External Secrets not updating**: Check the External Secrets Operator logs and verify the refresh interval
-
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
