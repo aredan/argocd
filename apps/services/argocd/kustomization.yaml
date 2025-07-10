@@ -11,3 +11,4 @@ patches:
   - path: config.yaml
   - path: params.yaml
   - path: service.yaml
+  - path: rollout-extension.yaml
