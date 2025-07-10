@@ -13,7 +13,7 @@ resources:
 patches:
   - target:
       kind: Service
-      name: argo-rollouts
+      name: argo-rollouts-dashboard
     patch: |-
       - op: add
         path: /metadata/annotations
