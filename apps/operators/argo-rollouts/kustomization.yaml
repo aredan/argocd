@@ -6,6 +6,8 @@ resources:
   - https://github.com/argoproj/argo-rollouts/releases/download/v1.8.2/namespace-install.yaml
   - https://github.com/argoproj/argo-rollouts/releases/download/v1.8.2/install.yaml
   - https://github.com/argoproj/argo-rollouts/releases/download/v1.8.2/dashboard-install.yaml
+  # Local patch for ServiceAccount removal
+  - serviceaccount_removal.yaml
 
 # Use the newer patches format instead of patchesJson6902
 patches:
@@ -18,9 +20,4 @@ patches:
         value:
           omni-kube-service-exposer.sidero.dev/port: "3100"
           omni-kube-service-exposer.sidero.dev/label: "Argo Rollouts"
-
-# Remove duplicate ServiceAccount if it exists
-resources:
-  - resources:
-      - serviceaccount_removal.yaml
  
