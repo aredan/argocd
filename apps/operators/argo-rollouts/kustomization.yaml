@@ -2,14 +2,14 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - https://github.com/argoproj/argo-rollouts/releases/latest/download/namespace-install.yaml?ref=v1.8.2
-  - https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml?ref=v1.8.2
-  - https://github.com/argoproj/argo-rollouts/releases/latest/download/dashboard-install.yaml?ref=v1.8.2
+  # Use a specific version instead of 'latest' for better reproducibility
+  - https://github.com/argoproj/argo-rollouts/releases/download/v1.8.2/namespace-install.yaml
+  - https://github.com/argoproj/argo-rollouts/releases/download/v1.8.2/install.yaml
+  - https://github.com/argoproj/argo-rollouts/releases/download/v1.8.2/dashboard-install.yaml
 
-patchesJson6902:
+# Use the newer patches format instead of patchesJson6902
+patches:
   - target:
-      group: services
-      version: v1
       kind: Service
       name: argo-rollouts
     patch: |-
@@ -18,4 +18,9 @@ patchesJson6902:
         value:
           omni-kube-service-exposer.sidero.dev/port: "3100"
           omni-kube-service-exposer.sidero.dev/label: "Argo Rollouts"
+
+# Remove duplicate ServiceAccount if it exists
+resources:
+  - resources:
+      - serviceaccount_removal.yaml
  
