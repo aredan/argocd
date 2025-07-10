@@ -15,5 +15,4 @@ patches:
         value:
           omni-kube-service-exposer.sidero.dev/port: "50083"
           omni-kube-service-exposer.sidero.dev/label: "Argo Rollouts"
-          omni-kube-service-exposer.sidero.dev/prefix: argo-rollouts
- 
+          omni-kube-service-exposer.sidero.dev/prefix: argorollouts
