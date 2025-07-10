@@ -3,11 +3,11 @@ kind: Kustomization
 
 resources:
   # Use a specific version instead of 'latest' for better reproducibility
-  - https://github.com/argoproj/argo-rollouts/releases/download/v1.8.2/namespace-install.yaml
+  #- https://github.com/argoproj/argo-rollouts/releases/download/v1.8.2/namespace-install.yaml
   - https://github.com/argoproj/argo-rollouts/releases/download/v1.8.2/install.yaml
   - https://github.com/argoproj/argo-rollouts/releases/download/v1.8.2/dashboard-install.yaml
   # Local patch for ServiceAccount removal
-  - serviceaccount_removal.yaml
+  #- serviceaccount_removal.yaml
 
 # Use the newer patches format instead of patchesJson6902
 patches:
