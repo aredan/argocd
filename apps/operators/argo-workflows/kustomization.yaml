@@ -26,11 +26,11 @@ patches:
 #https://argoproj.github.io/argo-workflows/argo-server-auth-mode/
   - patch: |-
     - op: add
-      path: "/spec/template/spec/containers/0/args/-"
+      path: /spec/template/spec/containers/0/args/-
       value:
         --auth-mode
     - op: add
-      path: "/spec/template/spec/containers/0/args/-"
+      path: /spec/template/spec/containers/0/args/-
       value:
         server
     target:
