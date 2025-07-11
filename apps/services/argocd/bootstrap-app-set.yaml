@@ -43,6 +43,9 @@ spec:
         retry:
           limit: -1 # Infinite retries
           backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 5m
       ignoreDifferences:
         - group: "*"
           kind: "*"
