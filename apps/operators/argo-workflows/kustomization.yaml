@@ -24,15 +24,15 @@ patches:
           omni-kube-service-exposer.sidero.dev/prefix: argoworkflows
 
 #https://argoproj.github.io/argo-workflows/argo-server-auth-mode/
-  - patch: |-
-    - op: add
-      path: /spec/template/spec/containers/0/args/-
-      value:
-        --auth-mode
-    - op: add
-      path: /spec/template/spec/containers/0/args/-
-      value:
-        server
-    target:
-      kind: Deployment
-      name: argo-server
+  # - patch: |-
+  #   - op: add
+  #     path: /spec/template/spec/containers/0/args/-
+  #     value:
+  #       --auth-mode
+  #   - op: add
+  #     path: /spec/template/spec/containers/0/args/-
+  #     value:
+  #       server
+  #   target:
+  #     kind: Deployment
+  #     name: argo-server
