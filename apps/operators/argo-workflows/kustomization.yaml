@@ -4,9 +4,6 @@ kind: Kustomization
 
 namespace: argo-workflows #project manifest hardcodes 'argo' by default, legacy of workflows being their first project
 
-labels:
-  app.kubernetes.io/name: argo-workflows
-
 resources:
 - ./namespace.yaml
 - https://github.com/argoproj/argo-workflows/releases/download/v3.6.10/install.yaml
