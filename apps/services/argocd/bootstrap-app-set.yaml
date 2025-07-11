@@ -40,15 +40,12 @@ spec:
           - ApplyOutOfSyncOnly=true
           - RespectIgnoreDifferences=true
           - SkipDryRunOnMissingResource=true
-        ignoreDifferences:
-          - group: "*"
-            kind: "*"
-            managedFieldsManagers:
-              - external-secrets
         retry:
           limit: -1 # Infinite retries
           backoff:
-            duration: 30s
-            factor: 2
-            maxDuration: 5m
+      ignoreDifferences:
+        - group: "*"
+          kind: "*"
+          managedFieldsManagers:
+            - external-secrets
 
