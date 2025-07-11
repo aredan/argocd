@@ -4,7 +4,7 @@ kind: Kustomization
 
 namespace: argo-workflows #project manifest hardcodes 'argo' by default, legacy of workflows being their first project
 
-commonLabels:
+labels:
   app.kubernetes.io/name: argo-workflows
 
 resources:
@@ -23,7 +23,6 @@ patches:
           omni-kube-service-exposer.sidero.dev/label: "Argo Workflows"
           omni-kube-service-exposer.sidero.dev/prefix: argoworkflows
 
-patchesJson6902:
   - target:
       group: apps
       version: v1
@@ -42,3 +41,4 @@ patchesJson6902:
           "value": "server"
         }
       ]
+    patchType: JSONPatch
