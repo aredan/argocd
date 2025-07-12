@@ -5,26 +5,28 @@ kind: Kustomization
 namespace: argo-workflows #project manifest hardcodes 'argo' by default, legacy of workflows being their first project
 
 resources:
-- ./namespace.yaml
+- namespace.yaml
 - https://github.com/argoproj/argo-workflows/releases/download/v3.6.10/install.yaml
+- ts-ingress.yaml
+- ts-service.yaml
 
 
-patches:
-  - target:
-      group: apps
-      version: v1
-      kind: Deployment
-      name: argo-server
-    patch: |-
-      [
-        {
-          "op": "add",
-          "path": "/spec/template/spec/containers/0/args/-",
-          "value": "--auth-mode"
-        },
-        {
-          "op": "add",
-          "path": "/spec/template/spec/containers/0/args/-",
-          "value": "server"
-        }
-      ]
+# patches:
+#   - target:
+#       group: apps
+#       version: v1
+#       kind: Deployment
+#       name: argo-server
+#     patch: |-
+#       [
+#         {
+#           "op": "add",
+#           "path": "/spec/template/spec/containers/0/args/-",
+#           "value": "--auth-mode"
+#         },
+#         {
+#           "op": "add",
+#           "path": "/spec/template/spec/containers/0/args/-",
+#           "value": "server"
+#         }
+#       ]
