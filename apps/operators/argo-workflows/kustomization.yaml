@@ -10,7 +10,14 @@ resources:
 - ts-ingress.yaml
 - ts-service.yaml
 
-
+patches:
+- patch: |-
+    - op: add
+      path: /spec/template/spec/containers/0/args/-
+      value: --auth-mode=server
+  target:
+    kind: Deployment
+    name: argo-server
 # patches:
 #   - target:
 #       group: apps
