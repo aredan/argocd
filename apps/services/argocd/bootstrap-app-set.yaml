@@ -33,6 +33,7 @@ spec:
         namespace: '{{ path[2] }}'
       syncPolicy:
         automated:
+          selfHeal: true
           prune: true
         syncOptions:
           - CreateNamespace=true
@@ -47,9 +48,8 @@ spec:
             factor: 2
             maxDuration: 5m
       ignoreDifferences:
-        - group: "*"
+        - group: "external-secrets.io"
           kind: "ExternalSecret"
           jqPathExpressions:
             - ".data"
             - ".stringData"
-
