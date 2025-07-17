@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: rancher-versions
+  labels:
+    name: rancher-versions
+  name: rancher-versions
+spec:
+  selector:
+    app: rancher-versions
+  ports:
+  - name: rancher-versions
+    protocol: TCP
+    port: 5000
+    targetPort: 5000

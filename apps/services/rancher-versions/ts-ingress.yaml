@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: rancher-versions
+  name: rancher-versions
+  annotations:
+    tailscale.com/funnel: "true"
+  labels:
+    tailscale.com/proxy-class: acceptroutes
+spec:
+  defaultBackend:
+    service:
+      name: rancher-versions 
+      port:
+        number: 5000
+  ingressClassName: tailscale
+  tls:
+    - hosts:
+        - rancher-versions

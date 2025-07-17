@@ -1,0 +1,25 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: rancher-versions
+  name: rancher-versions
+  labels:
+    app: rancher-versions
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rancher-versions
+  template:
+    metadata:
+      labels:
+        app: rancher-versions
+    spec:
+      containers:
+      - name: rancher-versions
+        image: clemenko/dzver:latest
+        securityContext:
+          allowPrivilegeEscalation: false
+        ports:
+        - containerPort: 5000

@@ -51,4 +51,13 @@ spec:
           kind: "*"
           managedFieldsManagers:
             - external-secrets
+            - external-secrets-controller
+            - external-secrets-webhook
+        - group: "external-secrets.io"
+          kind: "*"
+        - group: "*"
+          kind: "Secret"
+          jqPathExpressions:
+            - ".data"
+            - ".stringData"
 
