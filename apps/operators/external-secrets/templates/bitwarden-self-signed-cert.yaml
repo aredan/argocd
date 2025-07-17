@@ -62,10 +62,11 @@ spec:
   privateKey:
     algorithm: RSA
     encoding: PKCS8
-    size: 2048
+    size: 4096  # Increased key size for better security
     rotationPolicy: Always
-  duration: 168h # 7d
-  renewBefore: 24h # 1d
+  duration: 2160h # 90d
+  renewBefore: 72h  # 3d before expiration
+  revisionHistoryLimit: 3
   issuerRef:
     name: bitwarden-certificate-issuer
     kind: ClusterIssuer
