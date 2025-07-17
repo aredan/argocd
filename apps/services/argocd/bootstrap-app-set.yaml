@@ -48,15 +48,7 @@ spec:
             maxDuration: 5m
       ignoreDifferences:
         - group: "*"
-          kind: "*"
-          managedFieldsManagers:
-            - external-secrets
-            - external-secrets-controller
-            - external-secrets-webhook
-        - group: "external-secrets.io"
-          kind: "*"
-        - group: "*"
-          kind: "Secret"
+          kind: "ExternalSecret"
           jqPathExpressions:
             - ".data"
             - ".stringData"
