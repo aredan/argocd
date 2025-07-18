@@ -47,8 +47,3 @@ spec:
             duration: 5s
             factor: 2
             maxDuration: 5m
-      ignoreDifferences:
-        - kind: "ExternalSecret"
-          jsonPointers:
-            - "/spec/data"
-            - "/spec/stringData"
