@@ -5188,7 +5188,7 @@ spec:
                       valueFrom:
                         fieldRef:
                             fieldPath: metadata.uid
-                  image: tailscale/k8s-operator:unstable
+                  image: tailscale/k8s-operator:v1.84.3
                   imagePullPolicy: Always
                   name: operator
                   volumeMounts:

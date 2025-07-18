@@ -2,7 +2,7 @@
 
 This repository contains the Kubernetes application configurations managed by ArgoCD. It follows GitOps principles to declaratively manage your Kubernetes cluster's state.
 
-Note: This repository is a work in progress and is not yet ready for production use.
+Note: This repository is a work in progress and is not yet ready for production use. The idea is to have a place where to learn ArgoCD and GitOps in general.
 
 ## Repository Structure
 
@@ -67,57 +67,3 @@ To use Bitwarden as a secrets backend:
 2. Seal your Bitwarden credentials (see the operator's README)
 3. Commit the sealed credentials to the repository
 
-## Applications
-
-### Sealed Secrets Controller
-- **Path**: `apps/kube-system/sealed-secrets`
-- **Description**: Encrypts Kubernetes Secrets for safe storage in Git
-- **Namespace**: `kube-system`
-
-### External Secrets Operator
-- **Path**: `apps/operators/external-secrets`
-- **Description**: Syncs secrets from external secret stores (like Bitwarden) to Kubernetes
-- **Namespace**: `external-secrets`
-
-### Monitoring Stack
-- **Path**: `apps/monitoring/prometheus-stack`
-- **Description**: Prometheus, Grafana, and Alertmanager for cluster monitoring
-- **Namespace**: `monitoring`
-
-### AdGuard Home
-- **Path**: `apps/services/adguard`
-- **Description**: Network-wide ad blocking and DNS server
-- **Namespace**: `services`
-
-### Cert Manager
-- **Path**: `apps/services/cert-manager`
-- **Description**: Manages TLS certificates for your applications
-- **Namespace**: `services`
-
-### Tailscale
-- **Path**: `apps/services/tailscale`
-- **Description**: Secure network connectivity and VPN solution
-- **Namespace**: `services`
-
-## Best Practices
-
-1. **Secrets Management**:
-   - Never commit unencrypted secrets to the repository
-   - Use Sealed Secrets for sensitive data
-   - Consider External Secrets for dynamic secret management
-
-2. **Application Structure**:
-   - Follow the `apps/{namespace}/{app-name}` pattern
-   - Include a `README.md` in each application directory
-   - Document all required values and configurations
-
-3. **GitOps Practices**:
-   - Use pull requests for all changes
-   - Require code reviews for production changes
-   - Use ArgoCD sync waves for ordering when necessary
-
-## Troubleshooting
-
-- **Application not syncing**: Check the ArgoCD UI for sync errors
-- **Secrets not being created**: Verify the Sealed Secrets controller is running and the sealed secret is properly formatted
-- **External Secrets not updating**: Check the External Secrets Operator logs and verify the refresh interval
