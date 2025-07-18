@@ -1,0 +1,9 @@
+apiVersion: v2
+name: external-dns
+description: External DNS Operator for Kubernetes
+version: 0.17.0
+appVersion: "0.17.0"
+dependencies:
+  - name: external-dns
+    version: 1.17.0
+    repository: https://kubernetes-sigs.github.io/external-dns/
