@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: rancher-versions
-        image: clemenko/dzver:latest
+        image: harbor.aanetworks.org/aanetworks/stack-version:latest
         securityContext:
           allowPrivilegeEscalation: false
         ports:
