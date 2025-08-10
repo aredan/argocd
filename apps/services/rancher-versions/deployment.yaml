@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: rancher-versions
-        image: harbor.aanetworks.org/aanetworks/stack-version:2e250552
+        image: harbor.aanetworks.org/aanetworks/stack-version:451a949b
         securityContext:
           allowPrivilegeEscalation: false
         ports:
