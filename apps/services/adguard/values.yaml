@@ -19,7 +19,7 @@ adguard-home:
   # ────────────────────────────────
   image:
     repository: adguard/adguardhome
-    tag: "v0.107.64"        # or whatever tag matches appVersion
+    tag: "v0.107.69"        # or whatever tag matches appVersion
     pullPolicy: IfNotPresent
 
   # ────────────────────────────────
