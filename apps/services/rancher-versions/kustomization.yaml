@@ -6,3 +6,5 @@ resources:
 - deployment.yaml
 - service.yaml
 - ts-ingress.yaml
+- versions-cf-clustertunnel.yaml
+- versions-cf-tunnelbinding.yaml
