@@ -1,0 +1,13 @@
+apiVersion: networking.cfargotunnel.com/v1alpha2
+kind: ClusterTunnel
+metadata:
+  name: stack-versions.nx.do
+spec:
+  protocol: http2
+  newTunnel:
+    name: stack-versions.nx.do
+  cloudflare:
+    email: me@arielantigua.com
+    domain: nx.do
+    secret: cloudflare-secrets
+    accountId: 50acace0fb03180c0f8c4b02f7e3a067

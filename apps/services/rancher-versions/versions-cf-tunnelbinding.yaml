@@ -1,0 +1,13 @@
+apiVersion: networking.cfargotunnel.com/v1alpha1
+kind: TunnelBinding
+metadata:
+  name: stack-versions-tunnel-binding
+subjects:
+  - name: stack-versions 
+    spec:
+      fqdn: stack-versions.nx.do
+      target: http://rancher-versions.rancher-versions.svc.cluster.local:5000
+      noTlsVerify: true
+tunnelRef:
+  kind: ClusterTunnel
+  name: stack-versions.nx.do
