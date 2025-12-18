@@ -3,7 +3,7 @@ kind: Kustomization
 resources:
   # Find the latest tag here: https://github.com/ansible/awx-operator/releases
   - namespace.yaml
-  - https://github.com/ansible/awx-operator/config/default?ref=2.19.1
+  - https://github.com/ansible/awx-operator/releases/tag/2.19.1 
   - awx.yaml
   - ingress.yaml
 
