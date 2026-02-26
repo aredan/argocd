@@ -1,28 +1,34 @@
 # ArgoCD GitOps Repository
 
-This repository contains the Kubernetes application configurations managed by ArgoCD. It follows GitOps principles to declaratively manage your Kubernetes cluster's state.
+This repository contains Kubernetes application configurations managed by ArgoCD. It follows GitOps principles to declaratively manage the cluster state.
 
-Note: This repository is a work in progress and is not yet ready for production use. The idea is to have a place where to learn ArgoCD and GitOps in general.
+> **Note:** This repository is a work in progress and is not yet ready for production use. The idea is to have a place to learn ArgoCD and GitOps in general.
 
 ## Repository Structure
 
 ```
 apps/
-├── kube-system/               # System components
-│   └── sealed-secrets/        # Sealed Secrets controller
+├── kube-system/                    # System components
+│   └── sealed-secrets/             # Sealed Secrets controller
 │
-├── monitoring/                # Monitoring stack
-│   └── prometheus-stack/      # Prometheus, Grafana, and Alertmanager
+├── monitoring/                     # Monitoring stack
+│   └── prometheus-stack/           # Prometheus, Grafana, and Alertmanager
 │
-├── operators/                 # Cluster operators
-│   └── external-secrets/      # External Secrets Operator
+├── operators/                      # Cluster operators
+│   ├── argo-events/                # Argo Events
+│   ├── argo-rollouts/              # Argo Rollouts
+│   ├── argo-workflows/             # Argo Workflows
+│   ├── cloudflare-operator-system/ # Cloudflare DNS operator
+│   ├── external-dns/               # External DNS
+│   └── external-secrets/           # External Secrets Operator (Bitwarden)
 │
-├── services/                 # Application services
-│   ├── adguard/              # AdGuard Home
-│   ├── argocd/               # ArgoCD configuration
-│   ├── cert-manager/         # Cert Manager
-│   └── tailscale/            # Tailscale VPN
-
+├── services/                       # Application services
+│   ├── adguard/                    # AdGuard Home DNS
+│   ├── argocd/                     # ArgoCD configuration and bootstrap
+│   ├── awx/                        # AWX (Ansible Tower)
+│   ├── cert-manager/               # TLS certificate management
+│   ├── rancher-versions/           # Rancher versions service
+│   └── tailscale/                  # Tailscale VPN
 ```
 
 ## Prerequisites
@@ -31,29 +37,34 @@ apps/
 - `kubectl` configured to access your cluster
 - `helm` (v3+) for local chart development
 - `kubeseal` for managing sealed secrets
-- `kustomize` for managing Kubernetes resources
+- cert-manager installed in the cluster (required for Bitwarden TLS)
 
 ## Getting Started
 
 ### 1. Bootstrap the Repository
 
-This repository uses an ArgoCD ApplicationSet for bootstrapping applications. The bootstrap configuration is located at `apps/services/argocd/bootstrap-app-set.yaml`.
+This repository uses an ArgoCD ApplicationSet that auto-discovers all applications under `apps/*/*`. The bootstrap configuration is at `apps/services/argocd/bootstrap-app-set.yaml`.
+
+Apply it to your cluster to start syncing all applications:
+
+```bash
+kubectl apply -f apps/services/argocd/bootstrap-app-set.yaml -n argocd
+```
 
 ### 2. Sealed Secrets Setup
 
-Before deploying applications that require secrets:
-
-1. Ensure the Sealed Secrets controller is installed
-2. Seal your secrets using `kubeseal`:
+Before deploying applications that require secrets, ensure the Sealed Secrets controller is running. Then seal your secrets:
 
 ```bash
 # Create a Kubernetes secret
 kubectl create secret generic my-secret \
-  --from-literal=username=admin \
-  --from-literal=password=secret \
+  --from-literal=key=value \
   -n my-namespace \
   --dry-run=client \
   -o yaml > my-secret.yaml
+
+# Fetch the sealing key
+kubeseal --fetch-cert > public-key.pem
 
 # Seal the secret
 kubeseal --format=yaml --cert=public-key.pem < my-secret.yaml > my-sealed-secret.yaml
@@ -61,9 +72,21 @@ kubeseal --format=yaml --cert=public-key.pem < my-secret.yaml > my-sealed-secret
 
 ### 3. External Secrets with Bitwarden
 
-To use Bitwarden as a secrets backend:
+The cluster uses Bitwarden Secrets Manager as the central secrets backend via a `ClusterSecretStore`. See [`apps/operators/external-secrets/README.md`](apps/operators/external-secrets/README.md) for the full setup guide, including:
 
-1. Update `apps/operators/external-secrets/bitwarden-secret-store.yaml` with your Bitwarden API configuration
-2. Seal your Bitwarden credentials (see the operator's README)
-3. Commit the sealed credentials to the repository
+- Bitwarden access token configuration
+- Self-signed TLS certificate chain (cert-manager)
+- Creating ExternalSecret resources
 
+## Dependency Management
+
+This repository uses [Renovate](https://docs.renovatebot.com/) to automatically create PRs for Helm chart and container image updates. Configuration is in `renovate.json`.
+
+## Sync Policy
+
+All applications are configured with:
+
+- **Automated sync** with self-heal and pruning
+- **Server-side apply** for large CRD resources
+- **Infinite retries** with exponential backoff
+- **Namespace auto-creation**
