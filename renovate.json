@@ -6,5 +6,13 @@
     "fileMatch": [
       "^apps/([^/]+/)+[^/]+\\.ya?ml$"
     ]
-  }
+  },
+  "packageRules": [
+    {
+      "description": "Disable ArgoCD manager for Helm Chart.yaml files to avoid duplicate PRs",
+      "matchManagers": ["argocd"],
+      "matchFileNames": ["**/Chart.yaml"],
+      "enabled": false
+    }
+  ]
 }
