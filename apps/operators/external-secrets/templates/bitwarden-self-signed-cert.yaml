@@ -2,6 +2,8 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: bitwarden-bootstrap-issuer
+  annotations:
+    argocd.argoproj.io/sync-wave: "-3"
 spec:
   selfSigned: {}
 
@@ -11,6 +13,8 @@ kind: Certificate
 metadata:
   name: bitwarden-bootstrap-certificate
   namespace: cert-manager
+  annotations:
+    argocd.argoproj.io/sync-wave: "-2"
 spec:
   # this is discouraged but required by ios
   commonName: cert-manager-bitwarden-tls
@@ -40,6 +44,8 @@ apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: bitwarden-certificate-issuer
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   ca:
     secretName: bitwarden-tls-certs
@@ -50,6 +56,8 @@ kind: Certificate
 metadata:
   name: bitwarden-tls-certs
   namespace: external-secrets
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   secretName: bitwarden-tls-certs
   dnsNames:
@@ -78,6 +86,8 @@ kind: Certificate
 metadata:
   name: bitwarden-css-certs
   namespace: external-secrets
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   secretName: bitwarden-css-certs
   dnsNames:
