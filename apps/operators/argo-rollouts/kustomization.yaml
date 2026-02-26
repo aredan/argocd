@@ -3,8 +3,8 @@ kind: Kustomization
 
 resources:
   - namespace.yaml
-  - https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml?ref=v1.8.3
-  - https://github.com/argoproj/argo-rollouts/releases/latest/download/dashboard-install.yaml?ref=v1.8.3
+  - https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml?ref=v1.8.4
+  - https://github.com/argoproj/argo-rollouts/releases/latest/download/dashboard-install.yaml?ref=v1.8.4
 
 patches:
   - target:
