@@ -36,8 +36,7 @@ apps/
 - Kubernetes cluster with ArgoCD installed
 - `kubectl` configured to access your cluster
 - `helm` (v3+) for local chart development
-- `kubeseal` for managing sealed secrets
-- cert-manager installed in the cluster (required for Bitwarden TLS)
+- `kubeseal` CLI for creating sealed secrets
 
 ## Getting Started
 
@@ -51,9 +50,22 @@ Apply it to your cluster to start syncing all applications:
 kubectl apply -f apps/services/argocd/bootstrap-app-set.yaml -n argocd
 ```
 
-### 2. Sealed Secrets Setup
+This single command deploys **everything** — including the Sealed Secrets controller (`apps/kube-system/sealed-secrets/`), cert-manager (`apps/services/cert-manager/`), and all other applications. The ApplicationSet uses infinite retries with exponential backoff, so resources that depend on controllers (like SealedSecrets or Certificates) will keep retrying until their controllers are ready.
 
-Before deploying applications that require secrets, ensure the Sealed Secrets controller is running. Then seal your secrets:
+### 2. Initial Cluster Bootstrapping Order
+
+On a fresh cluster, the applications will self-resolve in this order:
+
+1. **Sealed Secrets controller** — deploys into `kube-system`, starts unsealing SealedSecret resources
+2. **cert-manager** — deploys CRDs and controller, starts issuing certificates
+3. **External Secrets Operator** — deploys the operator, Bitwarden SDK server (waits for TLS certs via sync-waves), and ClusterSecretStore
+4. **Everything else** — applications that depend on ExternalSecrets (Cloudflare, Tailscale, etc.) will retry until secrets are available
+
+No manual intervention is needed after the bootstrap command. If some apps show errors initially, they will self-heal once their dependencies are running.
+
+### 3. Sealing New Secrets
+
+To add a new sealed secret to the repository, the Sealed Secrets controller must already be running in the cluster:
 
 ```bash
 # Create a Kubernetes secret
@@ -63,14 +75,16 @@ kubectl create secret generic my-secret \
   --dry-run=client \
   -o yaml > my-secret.yaml
 
-# Fetch the sealing key
+# Fetch the sealing key from the cluster
 kubeseal --fetch-cert > public-key.pem
 
 # Seal the secret
 kubeseal --format=yaml --cert=public-key.pem < my-secret.yaml > my-sealed-secret.yaml
 ```
 
-### 3. External Secrets with Bitwarden
+Commit the sealed YAML to the repo. **Never** commit the unsealed secret.
+
+### 4. External Secrets with Bitwarden
 
 The cluster uses Bitwarden Secrets Manager as the central secrets backend via a `ClusterSecretStore`. See [`apps/operators/external-secrets/README.md`](apps/operators/external-secrets/README.md) for the full setup guide, including:
 
