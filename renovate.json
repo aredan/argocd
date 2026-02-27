@@ -1,17 +1,23 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
+  "extends": [
+    "config:recommended"
+  ],
   "prHourlyLimit": 10,
   "argocd": {
-    "fileMatch": [
-      "^apps/([^/]+/)+[^/]+\\.ya?ml$"
+    "managerFilePatterns": [
+      "/^apps/([^/]+/)+[^/]+\\.ya?ml$/"
     ]
   },
   "packageRules": [
     {
       "description": "Disable ArgoCD manager for Helm Chart.yaml files to avoid duplicate PRs",
-      "matchManagers": ["argocd"],
-      "matchFileNames": ["**/Chart.yaml"],
+      "matchManagers": [
+        "argocd"
+      ],
+      "matchFileNames": [
+        "**/Chart.yaml"
+      ],
       "enabled": false
     }
   ]
