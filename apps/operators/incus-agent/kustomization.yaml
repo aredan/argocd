@@ -7,19 +7,16 @@ patches:
       kind: Namespace
       name: incus-agent
     patch: |-
-      - op: add
-        path: /metadata/annotations
-        value:
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: incus-agent
+        annotations:
           argocd.argoproj.io/sync-wave: "-1"
-      - op: add
-        path: /metadata/labels/pod-security.kubernetes.io~1enforce
-        value: privileged
-      - op: add
-        path: /metadata/labels/pod-security.kubernetes.io~1audit
-        value: privileged
-      - op: add
-        path: /metadata/labels/pod-security.kubernetes.io~1warn
-        value: privileged
+        labels:
+          pod-security.kubernetes.io/enforce: privileged
+          pod-security.kubernetes.io/audit: privileged
+          pod-security.kubernetes.io/warn: privileged
   - target:
       kind: DaemonSet
       name: incus-agent
