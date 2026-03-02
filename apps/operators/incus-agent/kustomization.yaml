@@ -2,28 +2,3 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - https://raw.githubusercontent.com/aredan/talos-incus-agent/v6.22.1/deploy/daemonset.yaml
-patches:
-  - target:
-      kind: Namespace
-      name: incus-agent
-    patch: |-
-      apiVersion: v1
-      kind: Namespace
-      metadata:
-        name: incus-agent
-        annotations:
-          argocd.argoproj.io/sync-wave: "-1"
-        labels:
-          pod-security.kubernetes.io/enforce: privileged
-          pod-security.kubernetes.io/audit: privileged
-          pod-security.kubernetes.io/warn: privileged
-  - target:
-      kind: DaemonSet
-      name: incus-agent
-    patch: |-
-      apiVersion: apps/v1
-      kind: DaemonSet
-      metadata:
-        name: incus-agent
-        annotations:
-          argocd.argoproj.io/sync-wave: "1"
