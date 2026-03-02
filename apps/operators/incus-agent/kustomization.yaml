@@ -21,7 +21,9 @@ patches:
       kind: DaemonSet
       name: incus-agent
     patch: |-
-      - op: add
-        path: /metadata/annotations
-        value:
+      apiVersion: apps/v1
+      kind: DaemonSet
+      metadata:
+        name: incus-agent
+        annotations:
           argocd.argoproj.io/sync-wave: "1"
