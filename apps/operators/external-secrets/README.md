@@ -68,8 +68,6 @@ The `templates/bitwarden-secret-store.yaml` file contains the ClusterSecretStore
 - `organizationID` — your Bitwarden organization UUID
 - `projectID` — your Bitwarden project UUID
 
-These values are also stored as sealed secrets in `templates/bitwarden-ids-sealed.yaml`.
-
 ### 4. Deploy
 
 Commit and push your changes. ArgoCD will automatically detect and deploy the configuration via the ApplicationSet.
